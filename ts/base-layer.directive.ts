@@ -1,7 +1,9 @@
 import {
-    Attribute,
     Directive,
+    Input,
+    OnChanges,
     OnDestroy,
+    SimpleChanges,
 } from '@angular/core';
 import { LayerProvider } from './layer.provider';
 import { LayersControlProvider } from './layers-control.provider';
@@ -31,13 +33,23 @@ import { LayersControlProvider } from './layers-control.provider';
 @Directive({
     selector: '[yaga-base-layer]',
 })
-export class BaseLayerDirective implements OnDestroy  {
+export class BaseLayerDirective implements OnChanges, OnDestroy {
+    @Input() public name: string;
+
     constructor(
         // TODO: Inject LayersControl @Inject(forwardRef(() => LayersControl)) protected layersControl: LayersControl,
         protected layer: LayerProvider,
-        @Attribute('yaga-base-layer') public readonly name: string,
         public layersControlProvider: LayersControlProvider,
-    ) {
+    ) { }
+
+    public ngOnChanges(changes: SimpleChanges): void {
+        if (typeof changes.name !== 'undefined') {
+            this.updateLayerName();
+        }
+    }
+
+    public updateLayerName(): void {
+        this.layersControlProvider.ref.removeLayer(this.layer.ref);
         this.layersControlProvider.ref.addBaseLayer(this.layer.ref, name);
     }
 
