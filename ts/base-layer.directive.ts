@@ -50,7 +50,7 @@ export class BaseLayerDirective implements OnChanges, OnDestroy {
 
     public updateLayerName(): void {
         this.layersControlProvider.ref.removeLayer(this.layer.ref);
-        this.layersControlProvider.ref.addBaseLayer(this.layer.ref, name);
+        this.layersControlProvider.ref.addBaseLayer(this.layer.ref, this.name);
     }
 
     /**
