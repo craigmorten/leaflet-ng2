@@ -1,4 +1,4 @@
-import { OnDestroy } from '@angular/core';
+import { OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { LayerProvider } from './layer.provider';
 import { LayersControlProvider } from './layers-control.provider';
 /**
@@ -23,11 +23,13 @@ import { LayersControlProvider } from './layers-control.provider';
  * @link https://leaflet-ng2.yagajs.org/latest/typedoc/classes/baselayerdirective.html API documentation
  * @example https://leaflet-ng2.yagajs.org/latest/examples/layers-control-directive/
  */
-export declare class BaseLayerDirective implements OnDestroy {
+export declare class BaseLayerDirective implements OnChanges, OnDestroy {
     protected layer: LayerProvider;
-    readonly name: string;
     layersControlProvider: LayersControlProvider;
-    constructor(layer: LayerProvider, name: string, layersControlProvider: LayersControlProvider);
+    name: string;
+    constructor(layer: LayerProvider, layersControlProvider: LayersControlProvider);
+    ngOnChanges(changes: SimpleChanges): void;
+    updateLayerName(): void;
     /**
      * Internal method to provide the removal from the control in Leaflet, when removing it from the Angular template
      */
