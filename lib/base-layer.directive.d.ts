@@ -1,13 +1,6 @@
-import {
-    Directive,
-    Input,
-    OnChanges,
-    OnDestroy,
-    SimpleChanges,
-} from '@angular/core';
+import { OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { LayerProvider } from './layer.provider';
 import { LayersControlProvider } from './layers-control.provider';
-
 /**
  * Angular2 directive for adding layers to the layers-control of Leaflet as base-layer.
  *
@@ -30,33 +23,15 @@ import { LayersControlProvider } from './layers-control.provider';
  * @link https://leaflet-ng2.yagajs.org/latest/typedoc/classes/baselayerdirective.html API documentation
  * @example https://leaflet-ng2.yagajs.org/latest/examples/layers-control-directive/
  */
-@Directive({
-    selector: '[yaga-base-layer]',
-})
-export class BaseLayerDirective implements OnChanges, OnDestroy {
-    @Input() public name: string;
-
-    constructor(
-        // TODO: Inject LayersControl @Inject(forwardRef(() => LayersControl)) protected layersControl: LayersControl,
-        protected layer: LayerProvider,
-        public layersControlProvider: LayersControlProvider,
-    ) { }
-
-    public ngOnChanges(changes: SimpleChanges): void {
-        if (typeof changes.name !== 'undefined') {
-            this.updateLayerName();
-        }
-    }
-
-    public updateLayerName(): void {
-        this.layersControlProvider.ref.removeLayer(this.layer.ref);
-        this.layersControlProvider.ref.addBaseLayer(this.layer.ref, this.name);
-    }
-
+export declare class BaseLayerDirective implements OnChanges, OnDestroy {
+    protected layer: LayerProvider;
+    layersControlProvider: LayersControlProvider;
+    name: string;
+    constructor(layer: LayerProvider, layersControlProvider: LayersControlProvider);
+    ngOnChanges(changes: SimpleChanges): void;
+    updateLayerName(): void;
     /**
      * Internal method to provide the removal from the control in Leaflet, when removing it from the Angular template
      */
-    public ngOnDestroy(): void {
-        this.layersControlProvider.ref.removeLayer(this.layer.ref);
-    }
+    ngOnDestroy(): void;
 }
